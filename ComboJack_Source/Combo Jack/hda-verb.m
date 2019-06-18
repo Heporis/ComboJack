@@ -537,6 +537,16 @@ static uint32_t headsetcheck()
     switch (codecID)
     {
         case 0x10ec0255:
+            VerbCommand(HDA_VERB(0x19, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24)); // 0x24 corresponds to IN (0x20) + VREF 80 (0x04)
+            WRITE_COEF(0x45, 0xd089);
+            WRITE_COEF(0x49, 0x0149);
+            usleep(350000);
+            // Read register 0x46
+            SetCoefIndex.verb = HDA_VERB(nid, AC_VERB_SET_COEF_INDEX, 0x46); 
+            SetCoefIndex.res = VerbCommand(SetCoefIndex.verb); 
+            GetProcCoef.verb = HDA_VERB(nid, AC_VERB_GET_PROC_COEF, 0x46);
+            GetProcCoef.res = VerbCommand(GetProcCoef.verb);
+            break;
         case 0x10ec0256:
             VerbCommand(HDA_VERB(0x19, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24)); // 0x24 corresponds to IN (0x20) + VREF 80 (0x04)
             WRITE_COEF(0x45, 0xd089);
